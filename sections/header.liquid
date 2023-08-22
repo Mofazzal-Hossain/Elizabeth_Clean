@@ -13,9 +13,15 @@
                             <a class="nav-link dropdown-toggle px-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ link.title }}
                             </a>
-                            <ul class="dropdown-menu p-0" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu p-2" style="min-width: 200px" aria-labelledby="navbarDropdown">
                                 {%- for childlink in link.links -%}
-                                    <li><a class="dropdown-item p-0" href="{{childlink.url }}">{{ childlink.title }}</a></li>
+                                    <li class="mb-2"><a class=" p-0" href="{{childlink.url }}">{{ childlink.title }}</a>
+                                        <ul class="list-group p-0 mt-1" aria-labelledby="navbarDropdown">
+                                            {%- for sublink in childlink.links -%}
+                                                <li class="list-group-item radius-0 p-1"><a class="ms-2 p-0" href="{{sublink.url }}">{{ sublink.title }}</a></li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    </li>
                                 {%- endfor -%}
                             </ul>
                         </li>
@@ -30,10 +36,15 @@
                 {% if shop.customer_accounts_enabled %}
                     {% if customer %}
                         <a href="/account" type="button" class="me-3">account</a>
+                        {{ "Logout" | customer_logout_link | replace: '<a', '<a class="me-2"'  }}
+                    {%- else -%}
+                        {{ "Login" | customer_login_link | replace: '<a', '<a class="me-2"'  }}
+                        {% comment %} <a href="/login" type="button" class="me-3">Login</a> {% endcomment %}
+                        {{ "Register" | customer_register_link | replace: '<a', '<a'  }}
                     {% endif %}
+                 
                 {% endif %}
-                <a href="/login" type="button" class="me-3">Login</a>
-                <a href="/register" type="button" class="me-3">Register</a>
+                
             </div>
         </div>
     </div>
