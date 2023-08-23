@@ -1,0 +1,8 @@
+{
+    "general":{
+        "404":{
+            "title":"No found",
+            "sub_title": "Check your search"
+        }
+    }
+}

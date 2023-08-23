@@ -1,0 +1,66 @@
+
+<header class="bg-white navbar">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1  w-100">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none site-title">
+                <h1 class="mb-0">{{ shop.name }}</h1>
+            </a>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                {%- for link in section.settings.menu.links -%}
+                    {%- if link.links !=blank -%}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link link-secondary dropdown-toggle px-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ link.title }}
+                            </a>
+                            <ul class="dropdown-menu p-2" style="min-width: 200px" aria-labelledby="navbarDropdown">
+                                {%- for childlink in link.links -%}
+                                    <li class="mb-2"><a class="p-0" href="{{childlink.url }}">{{ childlink.title }}</a>
+                                        <ul class="list-group p-0 mt-1" aria-labelledby="navbarDropdown">
+                                            {%- for sublink in childlink.links -%}
+                                                <li class="list-group-item radius-0 p-1"><a class="ms-2 p-0" href="{{sublink.url }}">{{ sublink.title }}</a></li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </li>
+                    {%- else -%}
+                        <li><a href="{{ link.url }}" class="nav-link px-2 link-secondary">{{ link.title }}</a></li>
+                    {%- endif -%}
+                {%- endfor -%}
+            </ul>
+
+            <div class="col-md-3 d-flex align-items-center justify-content-end">
+                <a href="/cart" class="me-3" style="line-height: 0;">{% render 'shopping-icon' %}</a>
+                {% if shop.customer_accounts_enabled %}
+                    {% if customer %}
+                        <a href="/account" type="button" class="me-3">account</a>
+                        {{ "Logout" | customer_logout_link | replace: '<a', '<a class="me-2"'  }}
+                    {%- else -%}
+                        {{ "Login" | customer_login_link | replace: '<a', '<a class="me-2"'  }}
+                        {% comment %} <a href="/login" type="button" class="me-3">Login</a> {% endcomment %}
+                        {{ "Register" | customer_register_link | replace: '<a', '<a'  }}
+                    {% endif %}
+                 
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+
+{%  schema  %}  
+    {
+        "name": "Header",
+        "settings": [
+            {
+                "type": "link_list",
+                "id": "menu",
+                "default": "main-menu",
+                "label": "select menu"
+            }
+        ]
+    }
+{% endschema %}

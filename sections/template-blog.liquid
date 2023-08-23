@@ -1,0 +1,63 @@
+<section class="my-5 blog-wrapper">
+    <div class="container">
+        <div class="row">
+            {% paginate blog.articles by section.settings.blog_range %}
+                {% for article in blog.articles %}
+                    <div class="col-md-4">
+                        <div class="card rounded-3 mb-4">
+                            {% if article.image !=blank %}
+                                <img src=" {{ article.image.src | img_url: '1920x' }}" class="card-img-top" alt=" {{ article.image.alt }}">
+                            {% else %}
+                                {% assign placeholder_image = "lifestyle-2" %}
+                                {{ placeholder_image | placeholder_svg_tag: "w-100 h-100" }}
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                {% if article.title !=blank %}
+                                    <h5 class="card-title">{{ article.title }}</h5>
+                                {% endif %}
+                                {% if article.excerpt !=blank %}
+                                    <p class="card-text">{{ article.excerpt }}</p>
+                                {% else %}
+                                    <p> {{ article.content | strip_html | truncatewords: 18 }}</p>
+                                {% endif %}
+                                <a href="{{ article.url }}" class="btn">{{ section.settings.button_title }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+              {% render 'pagination', pagination: paginate %}
+            {% endpaginate %}
+        </div>
+    </div>
+</section>
+
+
+
+{% schema %}
+    {
+        "name": "Templte blog",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Add title"
+            },
+            {
+                "type": "text",
+                "id": "button_title",
+                "label": "Add button title",
+                "default": "Read more"
+            },
+            {
+                "type": "range",
+                "id": "blog_range",
+                "label": "Select blog item range",
+                "default": 4,
+                "min": 1,
+                "max": 12
+            }
+        ]
+    }
+{% endschema %}

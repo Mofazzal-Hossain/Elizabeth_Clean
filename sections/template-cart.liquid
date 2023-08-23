@@ -1,0 +1,80 @@
+<section class="cart-area section my-5 py-5">
+    <div class="cart shopping">
+        <div class="container">
+            <div class="row justify-content-center">
+                {% if cart.item_count > 0 %}
+                    <div class="col-md-8 offset-2">
+                        <div class="block">
+                            <div class="product-list bg-white p-3 rounded-3">
+                                <form method="post" action="/cart/update">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-0 pb-0">Item Name</th>
+                                                <th class="border-0 pb-0">Quantity</th>
+                                                <th class="border-0 pb-0">Item Price</th>
+                                                <th class="border-0 pb-0">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in cart.items  %}
+                                                <!--<pre>{{ item | json }}</pre>-->
+                                                <tr>
+                                                    <td>
+                                                        <div class="product-info">
+                                                            <img
+                                                                width="80"
+                                                                src="{{ item.image | img_url: '1920x'}}"
+                                                                alt="">
+                                                            <a href="">{{ item.title }}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="updates[]" class="btn btn-default border" style="width: 100px;" value={{item.quantity}} min="0" pattern="[0-9]">
+                                                    </td>
+                                                    <td> {{ item.line_price | money }}</td>
+                                                    <td>
+                                                        <a class="product-remove" href="{{ item.url_to_remove }}">Remove</a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <div class="row justify-content-end cart-total">
+                                        <div class="col-md-2">Total</div>
+                                        <div class="col-md-2">{{ cart.total_price }}</div>
+                                    </div>
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <input type="submit" name="update" value="Update" id="update-btn"class="btn btn-transparent pull-right">
+                                        <input type="submit" class="btn btn-main pull-right" name="checkout" value="Checkout">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-4">
+                        <div class="bg-white p-5 rounded-3 text-center">
+                            <h4 class="mb-3">Your cart is empty</h4>
+                            <a href="{{ shop.url }}" class="btn">{{ section.settings.button_text }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+    {
+        "name": "Template Cart",
+        "settings": [
+            {
+                "type": "text",
+                "id": "button_text",
+                "label": "Add button title",
+                "default": "Continue shopping"
+            }
+        ]
+    }
+{% endschema %}

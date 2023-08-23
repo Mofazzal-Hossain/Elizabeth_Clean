@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="my-5 text-center">
+      {%- if section.settings.title !=blank -%}
+        <h4>{{ section.settings.title }}</h4>
+      {%- endif -%}
+      {%- if section.settings.sub_title !=blank -%}
+        <p> {{ section.settings.sub_title }}</p>
+      {%- endif -%}
+      {%- if section.settings.btn_title !=blank -%}
+        <a href="{{ section.settings.btn_url }}" class="btn btn-success">{{ section.settings.btn_title }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Template 404",
+        "tag": "section",
+        "class": "template-404",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "default": "404",
+                "label": "404 title"
+            },
+            {
+                "type": "text",
+                "id": "sub_title",
+                "default": "The page that you're looking for is not found",
+                "label": "sub title 404"
+            },
+            {
+                "type": "text",
+                "id": "btn_title",
+                "default": "Back to homepage",
+                "label": "Type button title"
+            },
+            {
+                "type": "url",
+                "id": "btn_url",
+                "label": "set button url",
+                "default": "/"
+            }
+        ]
+    }
+{% endschema %}
