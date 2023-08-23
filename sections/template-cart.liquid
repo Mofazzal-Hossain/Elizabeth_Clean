@@ -6,7 +6,7 @@
                     <div class="col-md-8 offset-2">
                         <div class="block">
                             <div class="product-list bg-white p-3 rounded-3">
-                                <form method="post" action="/cart/update">
+                                <form method="post" action=" {{ routes.cart_update_url }} ">
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -56,7 +56,7 @@
                     <div class="col-md-4">
                         <div class="bg-white p-5 rounded-3 text-center">
                             <h4 class="mb-3">Your cart is empty</h4>
-                            <a href="{{ shop.url }}" class="btn">{{ section.settings.button_text }}</a>
+                            <a href="{{ routes.all_products_collection_url }}" class="btn">{{ section.settings.button_text }}</a>
                         </div>
                     </div>
                 {% endif %}

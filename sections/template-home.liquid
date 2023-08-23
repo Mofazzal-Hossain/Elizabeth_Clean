@@ -1,0 +1,39 @@
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <h2>ksjdklsdfsdfdsff</h2>            
+            {% for product in collection.products %}
+                {{- product.title | link_to: product.url }}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+{% schema %}
+    {
+        "name": "Templte Product",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Add title"
+            },
+            {
+                "type": "text",
+                "id": "button_title",
+                "label": "Add button title",
+                "default": "Read more"
+            },
+            {
+                "type": "range",
+                "id": "product_range",
+                "label": "Select product item range",
+                "default": 4,
+                "min": 1,
+                "max": 12
+            }
+        ]
+    }
+{% endschema %}
