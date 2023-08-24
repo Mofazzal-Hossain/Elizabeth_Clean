@@ -1,0 +1,51 @@
+<section class="mb-5">
+  <div class="container">
+    <div class="section-title mt-5 mb-4 text-center">
+      {% if section.settings.feature_title %}
+        <h3>{{ section.settings.feature_title }}</h3>
+      {% endif %}
+    </div>
+    <div class="row">
+      {% for product in section.settings.featured_collection.products limit: section.settings.feature_product_range %}
+        <div class="col-md-3">
+          {% render 'product-card', product_item: product %}
+        </div>
+      {% else %}
+        {% for item in (1..4) %}
+          {% render 'feature-placeholder-product' %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured Collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "feature_title",
+        "label": "Feature title",
+        "default": "Featured Collection"
+      }, {
+        "type": "collection",
+        "id": "featured_collection",
+        "label": "Select collection"
+      }, {
+        "type": "range",
+        "id": "feature_product_range",
+        "label": "Number of product ot show",
+        "default": 4,
+        "min": 1,
+        "max": 24
+
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured Collection"
+      }
+    ]
+  }
+{% endschema %}

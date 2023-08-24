@@ -1,0 +1,51 @@
+<section class="my-5">
+    <div class="container">
+        {% if section.settings.collection_title %}
+            <h3 class="my-5 text-center">{{ section.settings.collection_title }}</h3>
+        {% endif %}
+        <div class="row justify-content-center">
+            {% for collection in collections %}
+                <div class="col-md-4">
+                    <div class="card rounded-3 mb-4">
+                        <div class="thumbnail-image">
+                        <a href="{{ collection.url }}">
+                            {% if collection.featured_image %}
+                                <img src=" {{ collection.featured_image | img_url: '1920x' }}" class="card-img-top" alt=" {{ collection.featured_image.alt }}">
+                            {% else %}
+                                {{ "product-2" | placeholder_svg_tag: "w-100 h-100" }}
+                            {% endif %}
+                        </a>
+                        </div>
+                        
+                        <div class="card-body">
+                            {% if collection.title %}
+                                <h5 class="card-title"> 
+                                    <a href="{{ collection.url }}">{{ collection.title }}</a>
+                                </h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+    {
+        "name": "Template List Collection",
+        "settings": [
+            {
+                "type": "text",
+                "id": "collection_title",
+                "label": "Add collection title",
+                "default": "Collections"
+            },
+            {
+                "type": "collection_list",
+                "id": "product_collection_list",
+                "label": "Select collection list"
+            }
+        ]
+    }
+{% endschema %}

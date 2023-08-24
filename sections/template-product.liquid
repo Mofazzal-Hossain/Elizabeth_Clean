@@ -1,1 +1,9 @@
-{{ product.title     }}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <img class="w-100" src="{{ product.featured_image | img_url: 'medium'  }}" alt="">
+            <h3 class="my-3">{{ product.title }}</h3>
+            <p>{{ product.content }}</p>
+        </div>
+    </div>
+</div>

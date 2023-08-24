@@ -3,38 +3,49 @@
         <div class="container">
             <div class="row justify-content-center">
                 {% if cart.item_count > 0 %}
-                    <div class="col-md-8 offset-2">
+                    <div class="col-md-8">
                         <div class="block">
-                            <div class="product-list bg-white p-3 rounded-3">
-                                <form method="post" action=" {{ routes.cart_update_url }} ">
-                                    <table class="table">
+                            <div class="product-list bg-white p-3  rounded-3 pb-4">
+                                <div class="d-flex align-items-center justify-content-between pb-4">
+                                    <h4>Your cart</h4>
+                                    <a href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+                                </div>
+                                <form method="post" action=" {{ routes.cart_url }} ">
+                                    <table class="table mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="border-0 pb-0">Item Name</th>
-                                                <th class="border-0 pb-0">Quantity</th>
-                                                <th class="border-0 pb-0">Item Price</th>
-                                                <th class="border-0 pb-0">Actions</th>
+                                                <th class="border-0 pb-2">Item Name</th>
+                                                <th class="border-0 pb-2">Quantity</th>
+                                                <th class="border-0 pb-2">Item Price</th>
+                                                <th class="border-0 pb-2">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for item in cart.items  %}
-                                                <!--<pre>{{ item | json }}</pre>-->
+                                            
+                                            {% for item in cart.items %}
+                                              <!--<pre>{{ item | json }}</pre>-->
                                                 <tr>
                                                     <td>
                                                         <div class="product-info">
-                                                            <img
-                                                                width="80"
-                                                                src="{{ item.image | img_url: '1920x'}}"
-                                                                alt="">
-                                                            <a href="">{{ item.title }}</a>
+                                                           <a href="{{ item.url }}" class="ms-0">
+                                                                {% if item.image %}
+                                                                    <img
+                                                                    width="80"
+                                                                    src="{{ item.image | img_url: '1920x' }}"
+                                                                    alt="{{ item.title | escape }}">
+                                                                {% else %}
+                                                                    {{ "product-1" | placeholder_svg_tag: "w-100" }}
+                                                                {% endif %}
+                                                           </a>
+                                                            <a href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="updates[]" class="btn btn-default border" style="width: 100px;" value={{item.quantity}} min="0" pattern="[0-9]">
+                                                        <input type="number" name="updates[]" id="updates_{{ forloop.index }}" class="text-center py-2 btn-default border" style="width: 100px;" value="{{ item.quantity }}" min="1" pattern="[0-9]">
                                                     </td>
-                                                    <td> {{ item.line_price | money }}</td>
+                                                    <td> {{ item.price | money }} </td>
                                                     <td>
-                                                        <a class="product-remove" href="{{ item.url_to_remove }}">Remove</a>
+                                                        <a class="product-remove" href="{{ routes.cart_clear_url }}?line={{ forLoop.index }}&quantity=0">Remove</a>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -42,12 +53,31 @@
                                     </table>
                                     <div class="row justify-content-end cart-total">
                                         <div class="col-md-2">Total</div>
-                                        <div class="col-md-2">{{ cart.total_price }}</div>
+                                        <div class="col-md-2">{{ cart.total_price | money }}</div>
                                     </div>
-                                    <div class="d-flex gap-2 justify-content-end">
-                                        <input type="submit" name="update" value="Update" id="update-btn"class="btn btn-transparent pull-right">
-                                        <input type="submit" class="btn btn-main pull-right" name="checkout" value="Checkout">
-                                    </div>
+                                   <div class="d-flex justify-content-between">
+                                        <div class="cart-notes">
+                                            <div class="form-group">
+                                                <label for="cartNotes"><b>Cart notes</b></label>
+                                                <textarea name="note" class="form-control mt-2" id="cartNotes" cols="40" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <!--<a class="btn" href="{{ routes.cart_update_url }}">Update</a>-->
+                                            {% for block in section.blocks %}
+                                                {% case block.type %}
+                                                    {% when 'subtotal' %}
+                                                        <h5>Subtotal: <span>{{ cart.items_subtotal_price | money }}</span></h5>
+                                                    {% when 'update_button' %}
+                                                        <button type="submit" name="update" id="update-btn"class="btn btn-transparent">Update </button>
+                                                    {% when 'update_button' %}
+                                                        <button name="checkout" class="btn btn-main"> Checkout</button>
+                                                    {% else %}
+                                                        
+                                                {% endcase %}
+                                            {% endfor %}
+                                        </div>
+                                   </div>
                                 </form>
                             </div>
                         </div>
@@ -55,7 +85,7 @@
                 {% else %}
                     <div class="col-md-4">
                         <div class="bg-white p-5 rounded-3 text-center">
-                            <h4 class="mb-3">Your cart is empty</h4>
+                            <h4 class="mb-3">{{ section.settings.cart_empty }}</h4>
                             <a href="{{ routes.all_products_collection_url }}" class="btn">{{ section.settings.button_text }}</a>
                         </div>
                     </div>
@@ -74,6 +104,30 @@
                 "id": "button_text",
                 "label": "Add button title",
                 "default": "Continue shopping"
+            },
+            {
+                "type": "text",
+                "id": "cart_empty",
+                "label": "Add cart empty text",
+                "default": "Your cart is empty"
+            }
+            
+        ],
+        "blocks": [
+            {
+                "type": "subtotal",
+                "name": "Subtotal",
+                "limit": 1
+            },
+            {
+                "type": "update_button",
+                "name": "Update Button",
+                "limit": 1
+            },
+            {
+                "type": "checkout_button",
+                "name": "Checkout Button",
+                "limit": 1
             }
         ]
     }

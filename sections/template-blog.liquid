@@ -5,16 +5,22 @@
                 {% for article in blog.articles %}
                     <div class="col-md-4">
                         <div class="card rounded-3 mb-4">
-                            {% if article.image !=blank %}
-                                <img src=" {{ article.image.src | img_url: '1920x' }}" class="card-img-top" alt=" {{ article.image.alt }}">
-                            {% else %}
-                                {% assign placeholder_image = "lifestyle-2" %}
-                                {{ placeholder_image | placeholder_svg_tag: "w-100 h-100" }}
-                            {% endif %}
+                            <div class="thumbnail-image">
+                                <a href="{{ article.url }}">
+                                    {% if article.image !=blank %}
+                                        <img src=" {{ article.image.src | img_url: '1920x' }}" class="card-img-top" alt=" {{ article.image.alt }}">
+                                    {% else %}
+                                        {% assign placeholder_image = "lifestyle-2" %}
+                                        {{ placeholder_image | placeholder_svg_tag: "w-100 h-100" }}
+                                    {% endif %}
+                                </a>
+                            </div>
                             
                             <div class="card-body">
                                 {% if article.title !=blank %}
-                                    <h5 class="card-title">{{ article.title }}</h5>
+                                    <a href="{{ article.url }}">
+                                        <h5 class="card-title">{{ article.title }}</h5>
+                                    </a>
                                 {% endif %}
                                 {% if article.excerpt !=blank %}
                                     <p class="card-text">{{ article.excerpt }}</p>

@@ -35,7 +35,7 @@
                 <a href="{{ routes.cart_url }}" class="me-3" style="line-height: 0;">{% render 'shopping-icon' %}</a>
                 {% if shop.customer_accounts_enabled %}
                     {% if customer %}
-                        <a href="{{ routes.account_url }}" type="button" class="me-3">account</a>
+                        <a href="{{ routes.account_url }}" type="button" class="me-3">My Account</a>
                         {{ "Logout" | customer_logout_link | replace: '<a', '<a class="me-2"'  }}
                     {%- else -%}
                         {{ "Login" | customer_login_link | replace: '<a', '<a class="me-2"'  }}

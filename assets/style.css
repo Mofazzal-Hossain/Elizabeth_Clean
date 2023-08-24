@@ -50,6 +50,18 @@ span.page.current {
   color: #28a9a8;
 }
 
+.card .thumbnail-image {
+  height: 320px;
+  overflow: hidden;
+}
+.card .thumbnail-image img{
+  height: 100%;
+  transform: scale(1);
+  transition: all 0.2s linear;
+}
+.card:hover img{
+  transform: scale(1.1);
+}
 
 /*=================================================================
   Cart
@@ -63,6 +75,13 @@ span.page.current {
 
 .shopping.cart .product-list .table > tbody > tr > td {
   vertical-align: middle;
+  border-bottom: 0;
+  border-top-width: 1px;
+  padding-top:15px;
+  padding-bottom:15px;
+}
+.shopping.cart .product-list .table img{
+  height: 70px;
 }
 
 .shopping.cart .product-list .product-info a {

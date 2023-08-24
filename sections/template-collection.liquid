@@ -1,3 +1,36 @@
-{{ collection.products.title }}
+<section class="my-5">
+    <div class="container">
+        <h6 class="text-center"><a href="{{ routes.collections_url }}">Go back to collections</a></h6>
+        <h3 class="mt-2 mb-5 text-center">{{ collection.title }}</h3>
+        <div class="row justify-content-center">
+            {% paginate collection.products by section.settings.product_per_page %}
+                {% for product in collection.products %}
+                    <div class="col-md-3">
+                        {% render 'product-card', product_item: product %}
+                    </div> 
+                {% endfor %}
+                {% render 'pagination', pagination: paginate %}
+            {% endpaginate %}
+        </div>
+    </div>
+</section>
 
-<h1>hello</h1>
+{%  schema  %} 
+{
+    "name": "Template Collection",
+    "settings": [
+        {
+            "type": "number",
+            "id": "product_per_page",
+            "label": "Collection products range",
+            "default": 6
+        },
+        {
+            "type": "checkbox",
+            "id": "product_vendor",
+            "label": "Do you want to show vendor?",
+            "default": false
+        }
+    ]
+}
+{% endschema %}
