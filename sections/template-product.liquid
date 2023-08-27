@@ -1,9 +1,32 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <img class="w-100" src="{{ product.featured_image | img_url: 'medium'  }}" alt="">
+            <!-- Slider main container -->
+            <div class="swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                <!-- Slides -->
+                    {% for media in product.media %}
+                        <div class="swiper-slide">
+                            {% render 'product-media', media: media %}
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+                <!-- If we need pagination -->
+                <div class="swiper-pagination"></div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
+                <!-- If we need scrollbar -->
+                <div class="swiper-scrollbar"></div>
+            </div>
             <h3 class="my-3">{{ product.title }}</h3>
             <p>{{ product.content }}</p>
+          
+        
         </div>
     </div>
 </div>

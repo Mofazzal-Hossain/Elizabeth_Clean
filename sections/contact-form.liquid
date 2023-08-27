@@ -1,8 +1,12 @@
-<div class="contact-form my-5">
+<div class="contact-form mb-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+               
                 <div class="flex flex-col items-center card bg-white rounded-4 p-4">
+                    {% if section.settings.contact_title %}
+                        <h2 class="mb-4 text-center">{{ section.settings.contact_title }}</h2>
+                    {% endif %}
                     {% form 'contact' %}
                         {% if form.errors %}
                             <h6 class="d-flex align-items-center gap-2 mb-3">
@@ -37,10 +41,10 @@
                         </div>
                         <div class="mb-3">
                             <div class="contact-method">
-                                <label for="contact-method">How do you want us to contact you?</label>
-                                <input type="radio" name="contact[contact_method]" value="email" id="email"><label for="email">Email</label><br>
-                                <input type="radio" name="contact[contact_method]" value="phone" id="phone"><label for="phone">Phone</label><br>
-                                <input type="radio" name="contact[contact_method]" value="text message" id="text"><label for="text">Text message</label>
+                                <label for="contact-method" class="d-block">How do you want us to contact you?</label>
+                                <input type="radio" name="contact[contact_method]" class="me-1" value="emailRedio" id="emailRedio"><label for="emailRedio">Email</label><br>
+                                <input type="radio" name="contact[contact_method]" class="me-1" value="phone" id="phone"><label for="phone">Phone</label><br>
+                                <input type="radio" name="contact[contact_method]" class="me-1" value="text message" id="text"><label for="text">Text message</label>
                               </div>
                         </div>
                         <div class="mb-3">
@@ -67,6 +71,13 @@
 {% schema %}
     {
         "name": "Contact Form",
+        "settings": [
+            {
+                "type": "text",
+                "id": "contact_title",
+                "label": "Set contact form title"
+            }
+        ],
         "presets": [
            {
                 "name" : "Contact Form"

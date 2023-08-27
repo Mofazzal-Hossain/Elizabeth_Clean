@@ -189,3 +189,30 @@ span.page.current {
 .product-checkout-details .verified-icon {
   margin-top: 25px;
 }
+
+.swiper-button-prev, .swiper-button-next{
+  color: #fff;
+
+}
+.swiper-button-next::after, .swiper-button-prev::after{
+  font-size: 20px;
+}
+.swiper-pagination{
+  color: #fff;
+  bottom: 0;
+}.swiper-pagination-bullet{
+  background: #fff;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active{
+  background-color: #fff;
+  opacity: 1;
+}
+.swiper-slide{
+  height: 500px;
+}
+.swiper-slide img,
+.swiper-slide video
+{
+  height: 500px;
+}
