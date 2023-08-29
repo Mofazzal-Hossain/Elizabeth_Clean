@@ -216,3 +216,16 @@ span.page.current {
 {
   height: 500px;
 }
+.offcanvas .btn-close{
+  top: 20px;
+  right: 30px;
+}
+.offcanvas .icon{
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+
+}
+.offcanvas-top{
+  height: 130px;
+}

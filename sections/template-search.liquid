@@ -1,0 +1,38 @@
+<section class="search-results my-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <h4 class="text-center">Search Results</h4>
+                <form action="{{ routes.search_url }}" method="get" class="mb-5">
+                    <div class="form-group d-flex ">
+                        <input type="text" name="q" class="form-control border-0 rounded-0" placeholder="Search">
+                        <button type="submit" class="border-0 bg-dark text-white px-2">Submit</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            {% paginate search.results by 4 %}
+               
+                {% if search.performed %}
+                    {% if search.results.size > 0 %}
+                        <h6>{{search.results.size}} results for the search term {{ search.terms | escape }}</h6>
+                        {% for item in search.results %}
+                            {% case item.object_type %}
+                                {% when 'product' %}
+                                    <div class="col-md-3">
+                                        {% render 'product-card', product_item: item  %}
+                                    </div>
+                                {% else %}
+                            {% endcase %}
+                        {% endfor %}
+                    {% else %}
+                        <h5 class="text-center fw-normal">No results found for the search term: <b>{{ search.terms | escape }}</b>. Try to use a different keyword</h5>
+                    {% endif %}
+                {% endif %}
+                {% render 'pagination' pagination: paginate%}
+            {% endpaginate %}
+        </div>
+    </div>  
+</section>

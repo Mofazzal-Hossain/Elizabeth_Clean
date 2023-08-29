@@ -1,6 +1,6 @@
 <div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <!-- Slider main container -->
             <div class="swiper">
                 <!-- Additional required wrapper -->
@@ -23,10 +23,221 @@
                 <!-- If we need scrollbar -->
                 <div class="swiper-scrollbar"></div>
             </div>
-            <h3 class="my-3">{{ product.title }}</h3>
-            <p>{{ product.content }}</p>
           
-        
+        </div>
+        <div class="col-md-7">
+            <div class="product-content bg-white p-4">
+                {% form 'product', product, id:'product-form', novalidate: 'novalidate' %}
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                    {% for block in section.blocks %}
+                        {% case block.type %}
+                            {% when 'product_vendor' %}
+                                {% if product.vendor %}
+                                    <span>{{product.vendor}}</span>
+                                {% endif %}
+                            {% when "product_title" %}
+                                <h3 class="mt-3">{{ product.title }}</h3>
+                            {% when "product_price" %}
+                                <div class="mt-3" id="price-{{section.id}}">
+                                    {% assign product_price = product.selected_or_first_available_variant %}
+                                    <span><s>{{product_price.compare_at_price | money}}</s></span>
+                                    <span class="position-relative"><b>{{ product_price.price | money}}</b>
+                                        {% if product_price.compare_at_price > product_price.price %}
+                                            <span class="position-absolute top-0 translate-middle badge rounded-full bg-danger" style="right:-65px">Sale</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% when "product_variant" %}
+                                <div class="mt-3">
+                                    {% unless product.has_only_default_variant %}
+                                        <variant-selector data-url="{{ product.url }}" data-section="{{ section.id }}">
+                                            {% for option in product.options_with_values %}
+                                                <label class="mb-1" for="option-{{ section.id }}-{{ forloop.index0 }}">{{option.name}}</label>
+                                                <select class="form-select mb-2" name="options[{{ option.name | escape }}]" style="width: 150px;" id="option-{{ section.id}}-{{ forloop.index0 }}">
+                                                    {% for value in option.values %}
+                                                        <option value="{{ value | escape}}"
+                                                            {% if option.selected_value == value %}
+                                                                selected="selected"
+                                                            {% endif %}
+                                                        >
+                                                            {{ value }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <script type="application/json">
+                                                    {{ product.variants | json }}
+                                                </script>
+                                            {% endfor %}
+                                        </variant-selector>
+                                    {% endunless %}
+                                </div>
+                            {% when "product_quantity" %}
+                                <div class="my-3">
+                                    <label for="quantity-{{ section.id }}">Quantity</label>
+                                    <input class="d-block mt-1 form-control text-center" type="number" pattern="[0-9]*" name="quantity" id="quantity-{{ section.id }}" value="1" min="1" style="width: 100px;">
+                                </div>
+                            {% when "product_description" %}
+                                <p>{{ product.content | truncatewords: 50  }}</p>
+                            {% when "product_cart_button" %}
+                                <div class="mt-3">
+
+                                    {% assign productInCart = false %}
+                                    {% for item in cart.items %}
+                                        {% if item.product.id == product.id %}
+                                            {% assign productInCart = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                  
+                                    {% if productInCart == false %}
+                                        <button type="submit" name="add" class="btn w-100 d-block"
+                                            {% if product.selected_or_first_available_variant ==false %}
+                                                disabled
+                                            {% endif %}
+                                        >
+                                            {% if product.selected_or_first_available_variant ==false %}
+                                                Sold out
+                                            {% else %}
+                                                Add to cart
+                                            {% endif %}
+                                        </button>
+                                    {% else %}
+                                        <a href="{{ routes.cart_url }}" class="btn w-100">View Cart</a>
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const viewCartButton = document.querySelector(`a[href="${routes.cart_url}"]`);
+                                                viewCartButton.innerText = 'View Cart';
+                                            });
+                                        </script>
+                                    {% endif %}
+                                     
+                                </div>
+                            {% else %}
+                        {% endcase %}
+                    {% endfor %}
+                {% endform %}
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    class VariantSelector extends HTMLElement{
+        constructor(){
+            super();
+            this.addEventListener('change', this.onVariantChange)
+        }
+        onVariantChange(){
+            this.getSelectedOptions();
+            this.getSelectedVariant();
+            if(this.currentVariant){
+                this.updateURL();
+                this.updateFormID();
+                this.updatePrice();
+            }
+        }
+
+        getSelectedOptions(){
+            this.options =Array.from(this.querySelectorAll('select'),(select)=>select.value);
+            console.log(this.options);
+         
+        }
+
+        getVariantJSON() {
+            this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
+            return this.variantData;
+        }
+
+        getSelectedVariant(){
+            this.currentVariant = this.getVariantJSON().find(
+                (variant) => {
+                    const findings = !variant.options.map(
+                        (option, index) => {
+                            return this.options[index] === option;
+                        }
+                    ).includes(false)
+    
+                    if (findings) {
+                        return variant;
+                    }
+                }
+            );
+            console.log(this.currentVariant);
+        }
+
+        updateURL() {
+            if(!this.currentVariant) return;
+            window.history.replaceState({},'', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+        }
+
+        updateFormID() {
+            const form_input=document.querySelector("#product-form").querySelector('input[name="id"]');
+            form_input.value=this.currentVariant.id;
+        }
+
+        updatePrice() {
+            fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+            .then((response) => response.text())
+            .then((responsText)=>{
+                const id = `price-${this.dataset.section}`;
+                const html = new DOMParser().parseFromString(responsText, 'text/html');
+
+                const oldPrice =document.getElementById(id);
+                const newPrice =html.getElementById(id);
+
+                if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+            })
+        }
+
+    }
+
+    customElements.define('variant-selector', VariantSelector);
+</script>
+
+{% schema %}
+    {
+        "name": "Template Product",
+        "blocks":[
+            {
+                "name": "Title",
+                "type": "product_title",
+                "limit": 1
+            },
+            {
+                "name": "Vendor",
+                "type": "product_vendor",
+                "limit": 1
+            },
+            {
+                "name": "Price",
+                "type": "product_price",
+                "limit": 1
+            },
+            {
+                "name": "Variant Selector",
+                "type": "product_variant",
+                "limit": 1
+            },
+            {
+                "name": "Quantity",
+                "type": "product_quantity",
+                "limit": 1
+            },
+            {
+                "name": "Description",
+                "type": "product_description",
+                "limit": 1
+            },
+            {
+                "name": "Cart Button",
+                "type": "product_cart_button",
+                "limit": 1
+            }
+        ],
+        "presets": [
+            {
+                "name": "Template Product"
+            }
+        ]
+        
+    }
+{% endschema %}

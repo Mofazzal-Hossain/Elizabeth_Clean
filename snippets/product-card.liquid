@@ -8,7 +8,7 @@
             {% endif %}
        </a>
     </div>
-    
+   
     <div class="card-body">
         {% if product_item.title %}
             {% if section.settings.product_vendor %}
@@ -26,9 +26,32 @@
         {% if product_item.price %}
             <span class="mb-2 d-block"><b>{{ product_item.price | money }}</b></span>
         {% endif %}
-        <form id="form-{{product_item.handle}}" method="post" action="/cart/add">
-            <input type="hidden" name="id" value="{{product_item.variants.first.id}}">
-            <a onclick="document.getElementById('form-{{product_item.handle}}').submit()" class="btn">Add to cart</i></a>
-        </form>
+       
+        {% assign productInCart = false %}
+        {% for item in cart.items %}
+            {% if item.product.id == product_item.id %}
+                {% assign productInCart = true %}
+            {% endif %}
+        {% endfor %}
+        
+        {% if productInCart == false %}
+            {% if product_item.has_only_default_variant %}
+                <form id="form-{{ product_item.handle }}" method="post" action="/cart/add">
+                    <input type="hidden" name="id" value="{{ product_item.variants.first.id }}">
+                    <button type="submit" class="btn add-to-cart-button" data-form-id="form-{{ product_item.handle }}">Add to cart</button>
+                </form>
+            {% else %}
+                <a href="{{ product_item.url }}" class="btn">Select Options</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ routes.cart_url }}" class="btn">View Cart</a>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const viewCartButton = document.querySelector(`a[href="${routes.cart_url}"]`);
+                    viewCartButton.innerText = 'View Cart';
+                });
+            </script>
+        {% endif %}
+        
     </div>
 </div>

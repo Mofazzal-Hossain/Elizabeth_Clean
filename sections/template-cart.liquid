@@ -26,7 +26,7 @@
                                               <!--<pre>{{ item | json }}</pre>-->
                                                 <tr>
                                                     <td>
-                                                        <div class="product-info">
+                                                        <div class="product-info d-flex gap-3 align-items-center">
                                                            <a href="{{ item.url }}" class="ms-0">
                                                                 {% if item.image %}
                                                                     <img
@@ -37,7 +37,19 @@
                                                                     {{ "product-1" | placeholder_svg_tag: "w-100" }}
                                                                 {% endif %}
                                                            </a>
-                                                            <a href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
+                                                            <h5 class="mb-0">
+                                                                <a href="{{ item.url }}" class="d-block ms-0">
+                                                                    <span>{{ item.product.title | truncatewords: 5 }}</span>
+                                                                </a>
+                                                             
+                                                                <div class="product-options">
+                                                                    {% for item in item.options_with_values %}
+                                                                        {% if item.value != "Default Title" %}
+                                                                            <span class="d-inline-block fw-normal" style="font-size: 14px;">{{ item.value | append: " /"}}</span>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </h5>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -45,7 +57,7 @@
                                                     </td>
                                                     <td> {{ item.price | money }} </td>
                                                     <td>
-                                                        <a class="product-remove" href="{{ routes.cart_clear_url }}?line={{ forLoop.index }}&quantity=0">Remove</a>
+                                                        <a class="product-remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
