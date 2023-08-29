@@ -1,0 +1,28 @@
+<section class="customer-account">
+    <div class="container">
+        <div class="card bg-white rounded-0 p-4 my-5 border-0">
+            <h3>Account</h3>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="row">
+                            {% assign number_of_orders = customer.orders | size %}
+                            {% if number_of_orders > 0%}
+                                {% paginate customer.orders by 6 %}
+                                    {% for order in customer.orders %}
+                                        <div class="col-md-4">
+                                            <h3>{{order.name}}</h3>
+                                        </div>
+                                    {% endfor %}
+                                    {% render 'pagination', pagination: paginate %}
+                                {% endpaginate %}  
+                            {% else %}
+                                <h3 class="text-center">You Currently  don't have any orders</h3>
+                            {% endif %}
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

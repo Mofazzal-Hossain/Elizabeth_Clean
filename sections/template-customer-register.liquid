@@ -1,0 +1,46 @@
+<div class="login-form auth-info-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card bg-white rounded-3 p-4 login-info">
+                    <h3 class="text-center">Register an accuont</h3>
+                    <div class="form mt-3">
+                        {% form 'create_customer' %}
+                            {{ form.errors | default_errors }}
+                            <div class="form-group mb-3">
+                                <label for="fname">First name</label>
+                                <input type="text" name="customer[first_name]" id="fname" class="form-control" placeholder="john">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="lname">Last name</label>
+                                <input type="text" name="customer[last_name]" id="lname" class="form-control" placeholder="Doe">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" name="customer[email]" autocomplete="email" id="email" class="form-control" placeholder="info@gmail.com">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" name="customer[note][Birthday]" autocomplete="date" id="dob" class="form-control" placeholder="01-01-2023">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password">Password</label>
+                                <input type="password" name="customer[password]" autocomplete="new-password" id="password" class="form-control" placeholder="password">
+                            </div>
+                        
+                            <div class="form-check ">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    I agree to terms and conditions
+                                </label>
+                            </div>
+                            <button type="submit" class="btn w-100 d-block mt-3">Create an account</button>
+                            <span id="forgotBtn" class="mt-2 d-block text-center">Already have an account? <a href="{{ routes.account_login_url }}" class="text-decoration-underline">Login</a></span>
+                        {% endform %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

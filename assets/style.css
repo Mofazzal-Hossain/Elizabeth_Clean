@@ -229,3 +229,20 @@ span.page.current {
 .offcanvas-top{
   height: 130px;
 }
+
+.auth-info-wrapper{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-group label{
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+.form-control{
+  padding: .6rem 1rem;
+}

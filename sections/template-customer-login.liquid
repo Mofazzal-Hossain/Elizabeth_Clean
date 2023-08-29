@@ -1,0 +1,81 @@
+<div class="login-form auth-info-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card bg-white rounded-3 p-4 login-info">
+                    <h3 class="text-center">Sign in to your account</h3>
+                    <div class="form mt-3">
+                        {% form 'customer_login' %}
+                            {{ form.errors | default_errors }}
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" name="customer[email]" id="email" class="form-control" placeholder="info@gmail.com">
+                            </div>
+                            {% if form.password_needed %}
+                                <div class="form-group mb-3">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="customer[password]" id="password" class="form-control" placeholder="password">
+                                </div>
+                            {% endif %}
+                            <div class="form-check ">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    I agree to terms and conditions
+                                </label>
+                            </div>
+                            <button type="submit" class="btn w-100 d-block mt-3">Login</button>
+                            <a href="#" id="forgotBtn" class="mt-2 d-block">Forgot password?</a>
+                        {% endform %}
+                    </div>
+                    {% if shop.checkout.guest_login %}
+                        <div class="guest-login">
+                            <hr>
+                            <h3 class="text-center">Continue as a guest</h3>
+                            {% form 'guest_login' %}
+                                <button type="submit" class="btn fw-bold w-100 mt-3">Continue as guest</button>
+                            {% endform %}
+                        </div>
+    
+                    {% endif %}
+                   
+                </div>
+                <div class="card bg-white rounded-3 p-4 recover-info" style="display: none;">
+                    <h3 class="text-center">Recover your password</h3>
+                    <div class="form mt-3">
+                        {% form 'recover_customer_password' %}
+                            {{ form.errors | default_errors }}
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="info@gmail.com">
+                            </div>
+                            <button type="submit" class="btn w-100 d-block mt-3">Recover now</button>
+                            <a href="#" id="backLogin" class="mt-2 d-block">Back to login</a>
+                        {% endform %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var forgotButton = document.getElementById("forgotBtn");
+    var backLoginButton = document.getElementById("backLogin");
+    
+    backLoginButton.addEventListener("click", function(){
+        var recoverInfo = document.getElementsByClassName("recover-info")[0];
+
+        var loginInfo = document.getElementsByClassName("login-info")[0];
+        
+        recoverInfo.style.display = 'none';
+        loginInfo.style.display = 'block';
+    });
+    
+    forgotButton.addEventListener("click", function(){
+        var recoverInfo = document.getElementsByClassName("recover-info")[0];
+        var loginInfo = document.getElementsByClassName("login-info")[0];
+        
+        recoverInfo.style.display = 'block';
+        loginInfo.style.display = 'none';
+    });
+</script>

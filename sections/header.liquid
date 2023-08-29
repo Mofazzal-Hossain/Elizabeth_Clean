@@ -41,7 +41,7 @@
                 {% if shop.customer_accounts_enabled %}
                     {% if customer %}
                         <a href="{{ routes.account_url }}" type="button" class="me-3">My Account</a>
-                        {{ "Logout" | customer_logout_link | replace: '<a', '<a class="me-2"'  }}
+                        <a href="{{ routes.account_login_url }}">{{ "Logout" | customer_logout_link }}</a>
                     {%- else -%}
                         {{ "Login" | customer_login_link | replace: '<a', '<a class="me-2"'  }}
                         {% comment %} <a href="/login" type="button" class="me-3">Login</a> {% endcomment %}
