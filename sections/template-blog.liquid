@@ -1,4 +1,4 @@
-<section class="my-5 blog-wrapper">
+<section class="blog-wrapper">
     <div class="container">
         <div class="row">
             {% paginate blog.articles by section.settings.blog_range %}
@@ -43,7 +43,7 @@
 
 {% schema %}
     {
-        "name": "Templte blog",
+        "name": "Templte Blog",
         "settings": [
             {
                 "type": "text",
@@ -60,10 +60,16 @@
                 "type": "range",
                 "id": "blog_range",
                 "label": "Select blog item range",
+                "step": 1,
                 "default": 4,
                 "min": 1,
                 "max": 12
             }
         ]
+        // "presets": [
+        //     {
+        //         "name": "Templte Blog"
+        //     }
+        // ]
     }
 {% endschema %}

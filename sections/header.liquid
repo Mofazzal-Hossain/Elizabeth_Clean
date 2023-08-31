@@ -3,7 +3,14 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1  w-100">
             <a href="{{ routes.root_url }}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none site-title">
-                <h1 class="mb-0">{{ shop.name }}</h1>
+                {% if section.settings.site_logo %}
+                    <img src="{{ section.settings.site_logo | img_url: 'medium' }}" alt="{{ section.settings.site_logo.alt }}">
+                {% elsif section.settings.site_title %}
+                    <h1 class="mb-0">{{ section.settings.site_title}}</h1>
+                {% else %}
+                    <h1 class="mb-0">{{ shop.name }}</h1>
+                {% endif %}
+
             </a>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -87,6 +94,16 @@
                 "id": "menu",
                 "default": "main-menu",
                 "label": "select menu"
+            },
+            {
+                "type": "image_picker",
+                "id": "site_logo",
+                "label": "Select site logo"
+            },
+            {
+                "type": "text",
+                "id": "site_title",
+                "label": "Add site title"
             }
         ]
     }

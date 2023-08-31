@@ -1,0 +1,38 @@
+<section class="hero-wrapper" style='background-image: url(
+    {% if section.settings.hero_banner_image !=blank%}
+        {{ section.settings.hero_banner_image | img_url: "1920x" }}
+    {% endif %})'>
+    <div class="container">
+        <div class="content">
+            {% if section.settings.hero_page_title !=blank %}
+                <h1>{{ section.settings.hero_page_title }}</h1>
+            {% else %}
+                <h1>{{ page_title }}</h1>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+{% schema %}
+    {
+        "name": "Hero Section",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "hero_banner_image",
+                "label": "Set background image"
+            },
+            {
+                "type": "text",
+                "id": "hero_page_title",
+                "label": "Set custom page title"
+            }
+        ],
+        "presets": [
+            {
+                "name": "Hero Section"
+            }
+        ]
+    }
+{% endschema %}

@@ -1,0 +1,91 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for block in section.blocks %}
+            {% case block.type %}
+                {% when "banner_slides" %}
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.index0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true" aria-label="Slide {{ forloop.index }}"></button>
+                {% else %}
+            {% endcase %}
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for block in section.blocks %}
+            {% case block.type %}
+                {%  when "banner_slides" %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="banner-wrapper">
+                            {% if block.settings.image %}
+                                <img src="{{ block.settings.image | img_url: '1920x' }}" class="d-block w-100" alt="{{ lock.settings.image.alt }}">
+                            {% else %}
+                                {{ "lifestyle-2" | placeholder_svg_tag: "w-100 h-100" }}
+                            {% endif %}
+                            <div class="content">
+                                {% if block.settings.title != blank %}
+                                    <h3>{{ block.settings.title }}</h3>
+                                {% endif %}
+                                {% if block.settings.description != blank %}
+                                    <p>{{ block.settings.description }}</p>
+                                {% endif %}
+                                {% if block.settings.button_label != blank %}
+                                    <a href="{{ block.settings.button_url }}" class="btn btn-primary">{{ block.settings.button_label }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+            {% endcase %}
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+{% schema %}
+    {
+        "name": "Home Banner",
+        "blocks": [
+            {
+                "name": "Banner Slide",
+                "type": "banner_slides",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Select banner slider image"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Add slider title"
+                    },
+                    {
+                        "type": "text",
+                        "id": "description",
+                        "label": "Add slider description"
+                    },
+                    {
+                        "type": "text",
+                        "id": "button_label",
+                        "label": "Add button label"
+                    },
+                    {
+                        "type": "url",
+                        "id": "button_url",
+                        "label": "Add button url"
+                    }
+                ]
+            }
+       ],
+        "presets": [
+            {
+                "name": "Home Banner"
+            }
+        ]
+    }
+{% endschema %}

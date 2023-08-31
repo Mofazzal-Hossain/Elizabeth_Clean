@@ -2,17 +2,17 @@
     <div class="d-flex gap-3 mt-3">
         <ul class="list-group d-flex flex-row rounded-0 gap-0 justify-content-center w-100">
             {% if pagination.previous %}
-                <li class="list-group-item m-0 border"><a class="d-block" href="{{ pagination.previous.url }}">{{ pagination.previous.title }}</a></li>
+                <li class="list-group-item m-0"><a class="d-block" href="{{ pagination.previous.url }}">{{ pagination.previous.title }}</a></li>
             {% endif %}
             {% for part in pagination.parts %}
                 {% if part.is_link %}
-                    <li class="list-group-item m-0 border"><a class="d-block" href="{{ part.url }}">{{ part.title }}</a></li>
+                    <li class="list-group-item m-0"><a class="d-block" href="{{ part.url }}">{{ part.title }}</a></li>
                 {% else %}
-                    <li class="list-group-item m-0 border disabled bg-primary"><a class="d-block text-white" href="{{ part.url }}">{{ part.title }}</a></li>
+                    <li class="list-group-item m-0 disable active"><a class="d-block text-white" href="{{ part.url }}">{{ part.title }}</a></li>
                 {% endif %}
             {% endfor %}
             {% if pagination.next %}
-                <li class="list-group-item m-0 border"><a class="d-block" href="{{ pagination.next.url }}">{{ pagination.next.title }}</a></li>
+                <li class="list-group-item m-0"><a class="d-block" href="{{ pagination.next.url }}">{{ pagination.next.title }}</a></li>
             {% endif %}
         </ul>
     </div>
