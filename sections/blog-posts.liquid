@@ -1,0 +1,84 @@
+<section class="blog-wrapper">
+    <div class="container">
+        {% if section.settings.title != blank %}
+            <div class="heading text-center mb-5">
+                <h2>{{ section.settings.title }}</h2>
+            </div>
+        {% endif %}
+       
+        <div class="row">
+            {% assign blog = blogs[section.settings.blog] %}
+            {% for article in blog.articles, limit: section.settings.blog_limit_per_page  %}
+              
+                <div class="col-md-4">
+                    <div class="card rounded-3 mb-4">
+                        <div class="thumbnail-image">
+                            <a href="{{ article.url }}">
+                                {% if article.image != blank %}
+                                    <img src="{{ article.image.src | img_url: '1920x' }}" class="card-img-top" alt="{{ article.image.alt }}">
+                                {% else %}
+                                    {% assign placeholder_image = "lifestyle-2" %}
+                                    {{ placeholder_image | placeholder_svg_tag: "w-100 h-100" }}
+                                {% endif %}
+                            </a>
+                        </div>
+                        
+                        <div class="card-body">
+                            {% if article.title != blank %}
+                                <a href="{{ article.url }}">
+                                    <h5 class="card-title">{{ article.title }}</h5>
+                                </a>
+                            {% endif %}
+                            {% if article.excerpt != blank %}
+                                <p class="card-text">{{ article.excerpt }}</p>
+                            {% else %}
+                                <p>{{ article.content | strip_html | truncatewords: 18 }}</p>
+                            {% endif %}
+                            <a href="{{ article.url }}" class="btn">{{ section.settings.button_title }}</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+{% schema %}
+    {
+        "name": "Templte Blog",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Add title"
+            },
+            {
+                "type": "blog",
+                "id": "blog",
+                "label": "blog"
+            },
+            {
+                "type": "text",
+                "id": "button_title",
+                "label": "Add button title",
+                "default": "Read more"
+            },
+            {
+                "type": "range",
+                "id": "blog_limit_per_page",
+                "label": "Blog post limit per page",
+                "min": 3,
+                "max": 12,
+                "default": 3
+            }
+        ],
+        "presets": [
+            {
+                "name": "Blog posts"
+            }
+        ]
+    }
+{% endschema %}
