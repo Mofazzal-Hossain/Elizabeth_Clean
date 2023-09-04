@@ -3,11 +3,11 @@
         <h6 class="text-center"><a href="{{ routes.collections_url }}">Go back to collections</a></h6>
         <h3 class="mt-2 mb-5 text-center">{{ collection.title }}</h3>
         <div class="row justify-content-center">
-            {% paginate collection.products by section.settings.product_per_page %}
+            {% paginate collection.products | sort: 'created_at' | reverse by section.settings.product_per_page %}
                 {% for product in collection.products %}
-                    <div class="col-md-3">
-                        {% render 'product-card', product_item: product %}
-                    </div> 
+                  <div class="col-md-3">
+                    {% render 'product-card', product_item: product %}
+                  </div>
                 {% endfor %}
                 {% render 'pagination', pagination: paginate %}
             {% endpaginate %}

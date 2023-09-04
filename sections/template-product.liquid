@@ -7,6 +7,7 @@
                     <!-- Additional required wrapper -->
                     <div class="swiper-wrapper">
                     <!-- Slides -->
+                    
                         {% for media in product.media %}
                             <div class="swiper-slide">
                                 {% render 'product-media', media: media %}
@@ -120,8 +121,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
 <script>
     class VariantSelector extends HTMLElement{
         constructor(){

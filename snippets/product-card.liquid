@@ -44,7 +44,7 @@
             <a href="{{ routes.cart_url }}" class="btn">View Cart</a>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const viewCartButton = document.querySelector(`a[href="${routes.cart_url}"]`);
+                    const viewCartButton = document.querySelector(`a[href="{{routes.cart_url}}"]`);
                     viewCartButton.innerText = 'View Cart';
                 });
             </script>
