@@ -3,7 +3,7 @@
         <div class="row">
             {% paginate blog.articles by section.settings.blog_range %}
                 {% for article in blog.articles %}
-                    <div class="col-md-4">
+                    <div class="col-sm-6 col-lg-4">
                         <div class="card rounded-3 mb-4">
                             <div class="thumbnail-image">
                                 <a href="{{ article.url }}">

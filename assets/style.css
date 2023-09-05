@@ -1,4 +1,3 @@
-
 body {
   background: #F8F9FA;
   overflow-x: hidden;
@@ -8,6 +7,9 @@ body {
 .site-title h1 {
   font-size: 20px;
 }
+.container {
+  max-width: 1320px;
+}
 a {
   text-decoration: none;
   color: #333;
@@ -16,7 +18,7 @@ a {
   margin: 0 5px;
 }
 .navbar {
- border-bottom: 1px solid #f6f6f6;
+  border-bottom: 1px solid #f6f6f6;
 }
 
 .navbar.fixed {
@@ -124,7 +126,7 @@ span.page.current {
   color: #28a9a8;
 }
 .card,
-.product-list-cart{
+.product-list-cart {
   border: 0;
   box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
 }
@@ -527,3 +529,114 @@ span.page.current {
 .ic-footer-col ul li a:hover {
   color: #28a9a8;
 }
+
+.blog-post-details img,
+.blog-post-details iframe {
+  width: 100%;
+  height: auto;
+}
+
+@media(max-width: 1199.98px) {
+  .ic-footer-col img {
+    width: 100%;
+  }
+  .carousel-item .content {
+    margin: 0 120px;
+  }
+  /* hero wrapper */
+  .hero-wrapper {
+    min-height: 400px;
+  }
+}
+@media(max-width: 991.98px) {
+  .top-mobile-info {
+    background: #f6f6f6;
+  }
+  .carousel-item .content {
+    margin: 0 80px;
+  }
+  .ic-footer-col img {
+    width: auto;
+  }
+  /* hero wrapper */
+  .hero-wrapper {
+    min-height: 350px;
+  }
+}
+
+@media(max-width: 767.98px) {
+  .top-mobile-info a {
+    font-size: 15px;
+  }
+  .nav-offcanvas {
+    min-width: 320px;
+    max-width: 320px;
+  }
+  .dropdown .dropdown-menu.show {
+    position: relative !important;
+    top: 0 !important;
+    transform: inherit !important;
+  }
+  .carousel-item .content {
+    margin: 0 20px;
+  }
+  .carousel-control-next,
+  .carousel-control-prev {
+    display: none;
+  }
+  .carousel-item img {
+    height: 60vh;
+  }
+  .carousel-item .content h3 {
+    font-size: 25px;
+    line-height: 40px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .feature-wrapper,
+  .contact-form-wrapper,
+  .collection-wrapper,
+  .blog-wrapper,
+  .cart-area.section,
+  .product-details-wrapper,
+  .footer-wrapper {
+    padding: 40px 10px;
+  }
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+  .footer-wrapper .footer-left {
+    max-width: 100%;
+  }
+  .ic-footer-col h3 {
+    margin-bottom: 10px;
+  }
+
+  /* login */
+  .auth-info-wrapper {
+    height: auto;
+    padding: 40px 0;
+  }
+  /* hero wrapper */
+  .hero-wrapper {
+    min-height: 300px;
+  }
+  /* cart */
+  .product-info {
+    width: 220px;
+  }
+  .product-info h5 {
+    font-size: 18px;
+  }
+  .price {
+    width: 100px;
+  }
+  /* blog */
+  .card .thumbnail-image img{
+    min-height: 200px;
+    max-height: 200px;
+  }
+}
+@media(max-width: 575.98px) {}

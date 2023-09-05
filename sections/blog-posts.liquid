@@ -9,8 +9,7 @@
         <div class="row">
             {% assign blog = blogs[section.settings.blog] %}
             {% for article in blog.articles, limit: section.settings.blog_limit_per_page  %}
-              
-                <div class="col-md-4">
+                <div class="col-sm-6 col-md-4">
                     <div class="card rounded-3 mb-4">
                         <div class="thumbnail-image">
                             <a href="{{ article.url }}">

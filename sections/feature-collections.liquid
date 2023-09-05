@@ -7,7 +7,7 @@
     </div>
     <div class="row justify-content-center">
       {% for product in section.settings.featured_collection.products limit: section.settings.feature_product_range %}
-        <div class="col-md-3">
+        <div class="col-lg-3 col-md-4 col-sm-6">
           {% render 'product-card', product_item: product %}
         </div>
       {% else %}

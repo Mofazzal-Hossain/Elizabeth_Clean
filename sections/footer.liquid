@@ -1,8 +1,8 @@
 <section class="footer-wrapper">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="footer-left">
+            <div class="col-lg-4 col-sm-6">
+                <div class="footer-left mb-4 mb-lg-0">
                     <a href="{{ routes.root_url }}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none site-title">
                         {% if section.settings.site_logo %}
                             <img src="{{ section.settings.site_logo | img_url: 'medium' }}" alt="{{ section.settings.site_logo.alt }}">
@@ -24,7 +24,7 @@
             {% for block in section.blocks %}
                 {% case block.type %}
                     {% when 'footer_menu' %}
-                        <div class="col-md-2">
+                        <div class="col-lg-2 col-md-3 col-sm-6">
                             <div class="ic-footer-col">
                                 {% if block.settings.footer_menu_title !=blank %}
                                     <h3>{{ block.settings.footer_menu_title }}</h3>
