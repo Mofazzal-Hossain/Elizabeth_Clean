@@ -1,120 +1,123 @@
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <!-- Slider main container -->
-            <div class="swiper">
-                <!-- Additional required wrapper -->
-                <div class="swiper-wrapper">
-                <!-- Slides -->
-                    {% for media in product.media %}
-                        <div class="swiper-slide">
-                            {% render 'product-media', media: media %}
-                        </div>
-                    {% endfor %}
+<div class="product-details-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <!-- Slider main container -->
+                <div class="swiper">
+                    <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                    <!-- Slides -->
                     
+                        {% for media in product.media %}
+                            <div class="swiper-slide">
+                                {% render 'product-media', media: media %}
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                    <!-- If we need pagination -->
+                    <div class="swiper-pagination"></div>
+                
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                
+                    <!-- If we need scrollbar -->
+                    <div class="swiper-scrollbar"></div>
                 </div>
-                <!-- If we need pagination -->
-                <div class="swiper-pagination"></div>
             
-                <!-- If we need navigation buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            
-                <!-- If we need scrollbar -->
-                <div class="swiper-scrollbar"></div>
             </div>
-          
-        </div>
-        <div class="col-md-7">
-            <div class="product-content bg-white p-4">
-                {% form 'product', product, id:'product-form', novalidate: 'novalidate' %}
-                    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
-                    {% for block in section.blocks %}
-                        {% case block.type %}
-                            {% when 'product_vendor' %}
-                                {% if product.vendor %}
-                                    <span>{{product.vendor}}</span>
-                                {% endif %}
-                            {% when "product_title" %}
-                                <h3 class="mt-3">{{ product.title }}</h3>
-                            {% when "product_price" %}
-                                <div class="mt-3" id="price-{{section.id}}">
-                                    {% assign product_price = product.selected_or_first_available_variant %}
-                                    <span><s>{{product_price.compare_at_price | money}}</s></span>
-                                    <span class="position-relative"><b>{{ product_price.price | money}}</b>
-                                        {% if product_price.compare_at_price > product_price.price %}
-                                            <span class="position-absolute top-0 translate-middle badge rounded-full bg-danger" style="right:-65px">Sale</span>
-                                        {% endif %}
-                                    </span>
-                                </div>
-                            {% when "product_variant" %}
-                                <div class="mt-3">
-                                    {% unless product.has_only_default_variant %}
-                                        <variant-selector data-url="{{ product.url }}" data-section="{{ section.id }}">
-                                            {% for option in product.options_with_values %}
-                                                <label class="mb-1" for="option-{{ section.id }}-{{ forloop.index0 }}">{{option.name}}</label>
-                                                <select class="form-select mb-2" name="options[{{ option.name | escape }}]" style="width: 150px;" id="option-{{ section.id}}-{{ forloop.index0 }}">
-                                                    {% for value in option.values %}
-                                                        <option value="{{ value | escape}}"
-                                                            {% if option.selected_value == value %}
-                                                                selected="selected"
-                                                            {% endif %}
-                                                        >
-                                                            {{ value }}
-                                                        </option>
-                                                    {% endfor %}
-                                                </select>
-                                                <script type="application/json">
-                                                    {{ product.variants | json }}
-                                                </script>
-                                            {% endfor %}
-                                        </variant-selector>
-                                    {% endunless %}
-                                </div>
-                            {% when "product_quantity" %}
-                                <div class="my-3">
-                                    <label for="quantity-{{ section.id }}">Quantity</label>
-                                    <input class="d-block mt-1 form-control text-center" type="number" pattern="[0-9]*" name="quantity" id="quantity-{{ section.id }}" value="1" min="1" style="width: 100px;">
-                                </div>
-                            {% when "product_description" %}
-                                <p>{{ product.content | truncatewords: 50  }}</p>
-                            {% when "product_cart_button" %}
-                                <div class="mt-3">
-
-                                    {% assign productInCart = false %}
-                                    {% for item in cart.items %}
-                                        {% if item.product.id == product.id %}
-                                            {% assign productInCart = true %}
-                                        {% endif %}
-                                    {% endfor %}
-                                  
-                                    {% if productInCart == false %}
-                                        <button type="submit" name="add" class="btn w-100 d-block"
-                                            {% if product.selected_or_first_available_variant ==false %}
-                                                disabled
-                                            {% endif %}
-                                        >
-                                            {% if product.selected_or_first_available_variant ==false %}
-                                                Sold out
-                                            {% else %}
-                                                Add to cart
-                                            {% endif %}
-                                        </button>
-                                    {% else %}
-                                        <a href="{{ routes.cart_url }}" class="btn w-100">View Cart</a>
-                                        <script>
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                const viewCartButton = document.querySelector(`a[href="${routes.cart_url}"]`);
-                                                viewCartButton.innerText = 'View Cart';
-                                            });
-                                        </script>
+            <div class="col-md-7">
+                <div class="product-content bg-white p-4">
+                    {% form 'product', product, id:'product-form', novalidate: 'novalidate' %}
+                        <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                        {% for block in section.blocks %}
+                            {% case block.type %}
+                                {% when 'product_vendor' %}
+                                    {% if product.vendor %}
+                                        <span>{{product.vendor}}</span>
                                     {% endif %}
-                                     
-                                </div>
-                            {% else %}
-                        {% endcase %}
-                    {% endfor %}
-                {% endform %}
+                                {% when "product_title" %}
+                                    <h3 class="mt-3">{{ product.title }}</h3>
+                                {% when "product_price" %}
+                                    <div class="mt-3" id="price-{{section.id}}">
+                                        {% assign product_price = product.selected_or_first_available_variant %}
+                                        <span><s>{{product_price.compare_at_price | money}}</s></span>
+                                        <span class="position-relative"><b>{{ product_price.price | money}}</b>
+                                            {% if product_price.compare_at_price > product_price.price %}
+                                                <span class="position-absolute top-0 translate-middle badge rounded-full bg-danger" style="right:-65px">Sale</span>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                {% when "product_variant" %}
+                                    <div class="mt-3">
+                                        {% unless product.has_only_default_variant %}
+                                            <variant-selector data-url="{{ product.url }}" data-section="{{ section.id }}">
+                                                {% for option in product.options_with_values %}
+                                                    <label class="mb-1" for="option-{{ section.id }}-{{ forloop.index0 }}">{{option.name}}</label>
+                                                    <select class="form-select mb-2" name="options[{{ option.name | escape }}]" style="width: 150px;" id="option-{{ section.id}}-{{ forloop.index0 }}">
+                                                        {% for value in option.values %}
+                                                            <option value="{{ value | escape}}"
+                                                                {% if option.selected_value == value %}
+                                                                    selected="selected"
+                                                                {% endif %}
+                                                            >
+                                                                {{ value }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <script type="application/json">
+                                                        {{ product.variants | json }}
+                                                    </script>
+                                                {% endfor %}
+                                            </variant-selector>
+                                        {% endunless %}
+                                    </div>
+                                {% when "product_quantity" %}
+                                    <div class="my-3">
+                                        <label for="quantity-{{ section.id }}">Quantity</label>
+                                        <input class="d-block mt-1 form-control text-center" type="number" pattern="[0-9]*" name="quantity" id="quantity-{{ section.id }}" value="1" min="1" style="width: 100px;">
+                                    </div>
+                                {% when "product_description" %}
+                                    <p>{{ product.content | truncatewords: 50  }}</p>
+                                {% when "product_cart_button" %}
+                                    <div class="mt-3">
+
+                                        {% assign productInCart = false %}
+                                        {% for item in cart.items %}
+                                            {% if item.product.id == product.id %}
+                                                {% assign productInCart = true %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    
+                                        {% if productInCart == false %}
+                                            <button type="submit" name="add" class="btn w-100 d-block"
+                                                {% if product.selected_or_first_available_variant ==false %}
+                                                    disabled
+                                                {% endif %}
+                                            >
+                                                {% if product.selected_or_first_available_variant ==false %}
+                                                    Sold out
+                                                {% else %}
+                                                    Add to cart
+                                                {% endif %}
+                                            </button>
+                                        {% else %}
+                                            <a href="{{ routes.cart_url }}" class="btn w-100">View Cart</a>
+                                            <script>
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    const viewCartButton = document.querySelector(`a[href="${routes.cart_url}"]`);
+                                                    viewCartButton.innerText = 'View Cart';
+                                                });
+                                            </script>
+                                        {% endif %}
+                                        
+                                    </div>
+                                {% else %}
+                            {% endcase %}
+                        {% endfor %}
+                    {% endform %}
+                </div>
             </div>
         </div>
     </div>

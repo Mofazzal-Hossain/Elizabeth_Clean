@@ -1,9 +1,9 @@
-<section class="my-5 blog-wrapper">
+<section class="blog-wrapper">
     <div class="container">
         <div class="row">
             {% paginate blog.articles by section.settings.blog_range %}
                 {% for article in blog.articles %}
-                    <div class="col-md-4">
+                    <div class="col-sm-6 col-lg-4">
                         <div class="card rounded-3 mb-4">
                             <div class="thumbnail-image">
                                 <a href="{{ article.url }}">
@@ -43,7 +43,7 @@
 
 {% schema %}
     {
-        "name": "Templte blog",
+        "name": "Templte Blog",
         "settings": [
             {
                 "type": "text",
@@ -60,6 +60,7 @@
                 "type": "range",
                 "id": "blog_range",
                 "label": "Select blog item range",
+                "step": 1,
                 "default": 4,
                 "min": 1,
                 "max": 12
@@ -67,7 +68,7 @@
         ]
         // "presets": [
         //     {
-        //         "name": "Templte blog"
+        //         "name": "Templte Blog"
         //     }
         // ]
     }
