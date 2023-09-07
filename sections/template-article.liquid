@@ -14,7 +14,6 @@
                                         <small class="text-center d-block" itemprop="author">{{ article.author }}</small>
                                     </div>
                                 {% endif %}
-                    
                             {% when "article_publish_date" %}
                                 {% if section.settings.article_date %}
                                     <time class="text-center d-block" itemprop="datePublished dateCreated">{{ article.updated_at | date: format: 'on_date' }}</time>

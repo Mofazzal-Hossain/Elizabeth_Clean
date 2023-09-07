@@ -118,10 +118,16 @@ a {
   white-space: nowrap;
 }
 
-.blog-wrapper p:empty {
+p:empty {
   display: none;
 }
-
+#comments .card-body p {
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+}
+#comments .card-body p:last-child {
+  margin-bottom: 0;
+}
 span.page.current {
   color: #28a9a8;
 }
@@ -304,6 +310,7 @@ span.page.current {
 .swiper-slide img,
 .swiper-slide video {
   height: 500px;
+  object-fit: cover;
 }
 .offcanvas .btn-close {
   top: 20px;
@@ -536,6 +543,27 @@ span.page.current {
   height: auto;
 }
 
+/* account */
+.order-item{
+  margin-bottom: 30px;
+}
+.order-item .image {
+  overflow: hidden;
+}
+.order-item .image img {
+  transition: all 0.3s linear;
+  transform: scale(1);
+}
+.order-item svg,
+.order-item img {
+  height: 250px;
+  object-fit: cover;
+  width: 100%;
+}
+.order-item:hover img {
+  transform: scale(1.1);
+}
+
 @media(max-width: 1199.98px) {
   .ic-footer-col img {
     width: 100%;
@@ -561,6 +589,12 @@ span.page.current {
   /* hero wrapper */
   .hero-wrapper {
     min-height: 350px;
+  }
+  /* product details */
+  .swiper-slide img,
+  .swiper-slide video,
+  .swiper-slide {
+    height: 300px;
   }
 }
 
@@ -601,7 +635,8 @@ span.page.current {
   .blog-wrapper,
   .cart-area.section,
   .product-details-wrapper,
-  .footer-wrapper {
+  .footer-wrapper,
+  .about-wrapper {
     padding: 40px 10px;
   }
   .mb-5 {
@@ -634,9 +669,21 @@ span.page.current {
     width: 100px;
   }
   /* blog */
-  .card .thumbnail-image img{
+  .card .thumbnail-image img {
     min-height: 200px;
     max-height: 200px;
+  }
+  /* about  */
+  .about-wrapper .image {
+    padding: 0;
+    margin-bottom: 20px;
+  }
+
+  /* product details */
+  .swiper-slide img,
+  .swiper-slide video,
+  .swiper-slide {
+    height: auto;
   }
 }
 @media(max-width: 575.98px) {}

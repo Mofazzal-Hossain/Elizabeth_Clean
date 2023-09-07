@@ -3,26 +3,68 @@
         <div class="card bg-white rounded-0 p-4 my-5 border-0">
             <h3>Account</h3>
             <div class="content">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-md-7">
                         <div class="row">
                             {% assign number_of_orders = customer.orders | size %}
-                            {% if number_of_orders > 0%}
-                                {% paginate customer.orders by 6 %}
+                            {% if number_of_orders > 0 %}
+                                <h5 class="mt-4 mb-3">Order history</h5>
+                                {% paginate customer.orders by section.settings.order_per_page %}
                                     {% for order in customer.orders %}
                                         <div class="col-md-4">
-                                            <h3>{{order.name}}</h3>
+                                            <div class="order-item position-relative">
+                                                {% if order.line_items.first.image %}
+                                                    <div class="image">
+                                                        <img src="{{ order.line_items.first.image | img_url: 'medium' }}" class="w-100" alt="">
+                                                    </div>
+                                                {% else %}
+                                                    {{ "product-1" | placeholder_svg_tag }}
+                                                {% endif %}
+                                                <div class="content d-flex justify-content-between mt-2">
+                                                    <div class="left">
+                                                        <h5 class="mb-2">{{ order.name | link_to: order.customer_url }}</h5>
+                                                        <p>{{ order.financial_status_label }}</p>
+                                                    </div>
+                                                    <div class="right">
+                                                        <button class="px-3 py-1 rounded-pill text-white bg-dark border-0" style="font-size:small">{{ order.fulfillment_status_label }}</button>
+                                                        <h5 class="mt-2">{{ order.total_price | money }}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     {% endfor %}
-                                    {% render 'pagination', pagination: paginate %}
+                                    <div class="col-md-12">
+                                        {% render 'pagination', pagination: paginate %}
+                                    </div>
                                 {% endpaginate %}  
                             {% else %}
                                 <h3 class="text-center">You Currently  don't have any orders</h3>
                             {% endif %}
                         </div> 
                     </div>
+                    <div class="col-md-4 offset-1">
+                        <h4>Account Details</h4>
+                        {{ customer.default_address | format_address }}
+                        <a class="text-decoration-underline" href="{{ routes.account_addresses_url }}">View addresses</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+{% schema %}
+    {
+        "name": "Template Customer",
+        "settings": [
+            {
+                "type": "range",
+                "id": "order_per_page",
+                "label": "Per page order range",
+                "default": 3,
+                "max": 12,
+                "min": 1
+            }
+        ]
+    }
+{% endschema %}

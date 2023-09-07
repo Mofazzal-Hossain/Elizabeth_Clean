@@ -1,0 +1,25 @@
+<div class="order-wrapper my-5">
+    <div class="container">
+        <div class="col-md-10 offset-1">
+            <div class="top-content d-flex justify-content-between align-items-center ">
+                <div class="left">
+                    <h3>Order {{ order.name }}</h3>
+                    <p class="text-secondary mb-2">Placed on {{ order.created_at | date: format: 'date' }}</p>
+                    <p class="bg-dark px-3 py-1 rounded-pill text-white d-inline-block" style="font-size:13px">{{ order.financial_status_label }}</p>
+                </div>
+                <div class="right">
+                    <a href="{{ routes.account_url }}" class="text-decoration-underline text-primary">Back to account</a>
+                </div>
+            </div>
+            <div class="order-items">
+                {% for items in order.line_items %}
+                    <div class="card border p-4 mb-3 rounded" style="box-shadow:none">
+                        {% if items.image %}
+                            <img src="{{ items.image | img_url}}" width="w-25" alt="{{ items.image.alt }}">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
