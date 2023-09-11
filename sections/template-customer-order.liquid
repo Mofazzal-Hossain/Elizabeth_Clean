@@ -14,10 +14,80 @@
             <div class="order-items">
                 {% for items in order.line_items %}
                     <div class="card border p-4 mb-3 rounded" style="box-shadow:none">
-                        {% if items.image %}
-                            <img src="{{ items.image | img_url}}" width="w-25" alt="{{ items.image.alt }}">
-                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {% if items.image %}
+                                    <div class="thumbnail-image">
+                                        <img width="150" height="150" class="rounded-3" src="{{ items.image | img_url}}" alt="{{ items.image.alt }}">
+                                    </div>
+                                {% else %}
+                                    {{ "product-1" | placeholder_svg_tag: width:150, height: 150 }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-5">
+                                <h2 class="fs-4">{{ items.title }}</h2>
+                                <table class="border my-3">
+                                    <tbody>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td>{{ items.original_price | money }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Quantity</td>
+                                            <td>{{ items.quantity }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Final price</td>
+                                            <td>{{ items.final_line_price | money }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>{{ items.product.description | truncatewords: 18 }}</p>
+                            </div>
+                            <div class="col-md-3 offset-2">
+                                <h2 class="fs-4">Delivery address</h2> 
+                                {% if order.shipping_address.address1 !=blank %}
+                                    <p class="mb-1">Address 1: {{ order.shipping_address.address1 }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.address2 !=blank %}
+                                    <p class="mb-1">Address 1: {{ order.shipping_address.address2 }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.street !=blank %}
+                                    <p class="mb-1">Street: {{ order.shipping_address.street }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.province !=blank %}
+                                    <p class="mb-1">Province: {{ order.shipping_address.province }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.city !=blank %}
+                                    <p class="mb-1">City: {{ order.shipping_address.city }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.country !=blank %}
+                                    <p class="mb-1">Country: {{ order.shipping_address.country }}</p>
+                                {% endif %}
+                                {% if order.shipping_address.zip !=blank %}
+                                    <p class="mb-1">ZIP: {{ order.shipping_address.zip }}</p>
+                                {% endif %}
+                            
+                            </div>
+                        </div>
+                        <div class="pt-3 border-top">
+                            <h4>Fulfillment</h4>
+                            {% if items.successfully_fulfilled_quantity > 0 %}
+                                <p class="mb-2">We have fulfilled <b>{{ items.successfully_fulfilled_quantity }}</b> items of your recent order.</p>
+                                <p class="mb-2">Tracking company: <b>{{ items.fulfillment.tracking_company }}</b></p>
+                                <p class="mb-2">Tracking number: <b>{{ items.fulfillment.tracking_number }}</b></p>
+                                <a href="{{ items.fulfillment.tracking_url }}" target="_blank" class="btn bg-dark d-inline-flex gap-2 align-items-center mt-1 fs-6" style="background-image:none">
+                                    <span>Track order </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                    </svg>
+                              </a>
+                            {% else %}
+                                <p>This item is not yet fulfilled</p>
+                            {% endif %}
+                        </div>
                     </div>
+                    
                 {% endfor %}
             </div>
         </div>

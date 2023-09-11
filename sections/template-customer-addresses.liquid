@@ -1,0 +1,266 @@
+<section class="customer-address my-5">
+    <div class="container">
+        <div class="col-md-10 offset-1">
+            <div class="card p-4 pb-5">
+                <div class="top-content border-bottom pb-2 d-flex justify-content-between align-items-center ">
+                    <div class="left">
+                        <h4>Manage Account Address</h4>
+                    </div>
+                    <div class="right">
+                        <a href="{{ routes.account_url }}" class="text-decoration-underline text-dark">Return to account page</a>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="mb-2">
+                        <table class="table address-list">
+                            <thead>
+                                <tr class="d-flex flex-wrap">
+                                    {% for address in customer.addresses %}
+                                        <th class="border px-3 py-2 border-bottom-0 " style="width: 25%;">Address {{ forloop.index }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="d-flex flex-wrap">
+                                    {% for address in customer.addresses %}
+                                        <td class="border px-3 py-3" style="width: 25%;">
+                                            <h6>Name: {{ address.name }}</h6>
+                                            {% if address.address1 and address.address2 ==blank %}
+                                                <p class="mb-2"> Address: {{ address.address1 }}</p>
+                                            {% elsif address.address1 !=  blank %}
+                                                <p class="mb-2"> Address 1: {{ address.address1 }}</p>
+                                            {% endif %}
+                                            {% if address.address2 %}
+                                                <p class="mb-2"> Address 2: {{ address.address2 }}</p>
+                                            {% endif %}
+                                            {% if address.company %}
+                                                <p class="mb-2">Company: {{ address.company }}</p>
+                                            {% endif %}
+                                            {% if address.city %}
+                                                <p class="mb-2"> City: {{ address.city }}</p>
+                                            {% endif %}
+                                            {% if address.street %}
+                                                <p class="mb-2"> Street: {{ address.street }}</p>
+                                            {% endif %}
+                                            {% if address.zip %}
+                                                <p class="mb-2"> Postal code: {{ address.zip }}</p>
+                                            {% endif %}
+                                            {% if address.country %}
+                                                <p class="mb-2"> Country: {{ address.country }}</p>
+                                            {% endif %}
+                                            <div class="d-flex mt-3 gap-2">
+                                                <button type="button" class="btn-primary p-2 px-3 rounded-1 text-white edit-button" style="font-size: 12px" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{ forloop.index }}" aria-controls="offcanvasRight{{ forloop.index }}">Edit</button>
+                                                <form class="address-delete-form" method="post" action="/account/addresses/{{ address.id }}"
+                                                >
+                                                    <input type="hidden" name="_method" value="delete">
+                                                    <button type="submit" class="btn-danger p-2 rounded-1 delete-button" style="font-size: 12px">Delete</button>
+                                                </form>
+                                            </div>
+                                  
+                                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight{{ forloop.index }}" aria-labelledby="offcanvasRightLabel">
+                                                <div class="offcanvas-header">
+                                                    <h5 id="offcanvasRightLabel">Edit address</h5>
+                                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                                </div>
+                                                <div class="offcanvas-body">
+                                                    <div class="edit-form">
+                                                        {% form 'customer_address', address %}
+                                                            <div class="form-group mb-3 row">
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="fname">First name</label>
+                                                                    <input type="text" class="form-control" id="fname" value="{{ form.first_name }}" name="address[first_name]" placeholder="Enter your first name..." required> 
+                                                                </div>
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="lname">Last name</label>
+                                                                    <input type="text" class="form-control" value="{{ form.last_name }}" id="lname" name="address[last_name]" placeholder="Enter your first name..." required> 
+                                                                </div>  
+                                                            </div>
+                                                            <div class="form-group mb-3">
+                                                                <label for="company">Company <span class="no-required">(optional)</span></label>
+                                                                <input type="text" name="address[company]" value="{{ form.company }}" class="form-control" id="company" placeholder="Enter your company name...">
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                <label for="address1">Address 1</label>
+                                                                <input type="text" name="address[address1]" value="{{ form.address1 }}" class="form-control" id="address1" placeholder="Enter your address..." required>
+                                                            </div>
+                                                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                <label for="address2">Address 2 <span class="no-required">(optional)</span></label>
+                                                                <input type="text" name="address[address2]" value="{{ form.address2 }}" class="form-control" id="address2" placeholder="Enter your address...">
+                                                            </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="city">City</label>
+                                                                    <input type="text" name="address[city]" value="{{ form.city }}" class="form-control" id="city" placeholder="Enter your city...">
+                                                                </div>
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="country">Country</label>
+                                                                    <select name="address[country]" class="form-control" id="country" data-default="{{ form.country }}" data-form-id="{{ form.id }}" autocomplete="country" required>
+                                                                        <option value="">Select a country</option>
+                                                                        {{ all_country_option_tags }}
+                                                                        
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="zip">ZIP/Postal Code</label>
+                                                                    <input type="text" name="address[zip]" value="{{ form.zip }}" class="form-control" id="zip" placeholder="Enter your postal code...">
+                                                                </div>
+                                                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                                                    <label for="phone">Phone <span class="no-required">(optional)</span></label>
+                                                                    <input type="tel" name="address[phone]" value="{{ form.phone }}" class="form-control" id="company" placeholder="Enter your phone number...">
+                                                                </div>
+                                                            </div>
+                                                        
+                                                            {{ form.set_as_default_checkbox }}
+                                                            <label for="address_default_address_new">Set as default</label>
+                                                            <button type="submit" class="btn d-block ms-auto">Save</button>
+                                                        {% endform %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- default address -->
+                        <h5 class="mb-3 text-decoration-underline"> Default address: </h5>
+                        <h6>Name: <b>{{ customer.default_address.name }}</b></h6>
+                        {% if customer.default_address.address1 and customer.default_address.address2 ==blank %}
+                            <p class="mb-2"> Address: <b>{{ customer.default_address.address1 }}</b></p>
+                        {% else %}
+                            <p class="mb-2"> Address 1: <b>{{ customer.default_address.address1 }}</b></p>
+                        {% endif %}
+                        {% if customer.default_address.address2 %}
+                            <p class="mb-2"> Address 2: <b>{{ customer.default_address.address2 }}</b> </p>
+                        {% endif %}
+                        {% if customer.default_address.city %}
+                            <p class="mb-2"> City: <b>{{ customer.default_address.city }}</b> </p>
+                        {% endif %}
+                        {% if customer.default_address.company %}
+                            <p class="mb-2"> Company: <b>{{ customer.default_address.company }}</b> </p>
+                        {% endif %}
+                        {% if customer.default_address.street %}
+                            <p class="mb-2"> Street: <b>{{ customer.default_address.street }}</b> </p>
+                        {% endif %}
+                        {% if customer.default_address.zip %}
+                            <p class="mb-2"> Postal code: <b>{{ customer.default_address.zip }}</b> </p>
+                        {% endif %}
+                        {% if customer.default_address.country %}
+                            <p class="mb-2"> Country: <b>{{ customer.default_address.country }}</b> </p>
+                        {% endif %}
+                    </div>
+                    <ul class="p-0 mt-4 m-0 d-flex gap-2">
+                        <li class="list-unstyled"><a href="#" class="btn-success p-2 rounded-1" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#addressModal">Add new address</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Add new address -->
+<div class="modal fade" id="addressModal" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addressModalLabel">Add new address</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% form 'customer_address', customer.new_address %}
+                <div class="form-group mb-3 row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="fname">First name</label>
+                        <input type="text" class="form-control" id="fname" name="address[first_name]" placeholder="Enter your first name..." required> 
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="lname">Last name</label>
+                        <input type="text" class="form-control" id="lname" name="address[last_name]" placeholder="Enter your first name..." required> 
+                    </div>  
+                </div>
+                <div class="form-group mb-3">
+                    <label for="company">Company <span class="no-required">(optional)</span></label>
+                    <input type="text" name="address[company]" class="form-control" id="company" placeholder="Enter your company name...">
+                </div>
+                <div class="form-group mb-3 row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="address1">Address 1</label>
+                        <input type="text" name="address[address1]" class="form-control" id="address1" placeholder="Enter your address..." required>
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="address2">Address 2 <span class="no-required">(optional)</span></label>
+                        <input type="text" name="address[address2]" class="form-control" id="address2" placeholder="Enter your address...">
+                </div>
+                </div>
+                <div class="form-group mb-3 row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="city">City</label>
+                        <input type="text" name="address[city]" class="form-control" id="city" placeholder="Enter your city...">
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="country">Country</label>
+                        <select name="address[country]" class="form-control" id="country">
+                            {{ all_country_option_tags }}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group mb-3 row">
+                
+                {% comment %}
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <label for="province">Province</label>
+                            <select name="address[province]" class="form-control" id="province" data-default="{{ form.province }}"
+                            autocomplete="address-level1">
+                            </select>
+                        </div>
+                {% endcomment %}
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="zip">ZIP/Postal Code</label>
+                        <input type="text" name="address[zip]" class="form-control" id="zip" placeholder="Enter your postal code...">
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="phone">Phone <span class="no-required">(optional)</span></label>
+                        <input type="tel" name="address[phone]" class="form-control" id="company" placeholder="Enter your phone number...">
+                    </div>
+                </div>
+            
+                {{ form.set_as_default_checkbox }}
+                <label for="address_default_address_new">Set as default</label>
+                <button type="submit" class="btn d-block ms-auto">Save</button>
+            {% endform %}
+        </div>
+    </div>
+</div>
+
+<script>
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    const editButtons = document.querySelectorAll('.edit-button');
+    
+    const editForm = document.querySelector(".edit-form");
+    deleteButtons.forEach((button)=>{
+        button.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const confirmDelete =window.confirm("Are you sure to delete this address?");
+            if(confirmDelete){
+                const form =button.closest(".address-delete-form");
+                form.submit();
+            }
+        })
+    });
+    /*-- 
+       editButtons.forEach(button=>{
+        button.addEventListener("click",(e)=>{
+            e.preventDefault();
+            editForm.style.display = 'block';
+        })
+    })  
+    --*/
+   
+
+</script>

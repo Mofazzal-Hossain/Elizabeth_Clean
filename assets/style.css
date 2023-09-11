@@ -335,12 +335,21 @@ span.page.current {
 }
 .form-group label {
   color: #333;
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 5px;
   text-align: left;
+  font-weight: 500;
+}
+.no-required{
+  color: #666;
+  font-size: 12px;
 }
 .form-control {
-  padding: 0.6rem 1rem;
+  padding: .6rem;
+  font-size: 13px;
+}
+#addressModal .modal-dialog{
+  max-width: 650px;
 }
 
 /* banner slider */
@@ -432,6 +441,23 @@ span.page.current {
   color: #fff;
 }
 
+/* address */
+.address-list p{
+  font-size: 15px;
+}
+.edit-address-wrap{
+  max-width: 80%;
+  margin: 0 auto;
+}
+/* .edit-form{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  height: 100%;
+  background:#fff;
+  transform: translate(-50%,-50%);
+} */
 /* about wrapper */
 .about-wrapper {
   padding: 80px 0;
@@ -456,22 +482,6 @@ span.page.current {
 }
 
 /* footer wrapper */
-
-@keyframes color {
-  0% {
-    background: #0C113C;
-  }
-  30% {
-    background: #0C113C;
-  }
-  60% {
-    background: #28a9a8;
-  }
-  100% {
-    background: #c7254e;
-  }
-}
-
 .footer-wrapper {
   animation: color 15s infinite ease-in-out;
   background: #0C113C;
@@ -562,6 +572,21 @@ span.page.current {
 }
 .order-item:hover img {
   transform: scale(1.1);
+}
+
+.order-wrapper .thumbnail-image img {
+  min-height: auto;
+  border: 1px solid #f6f6f6;
+  padding: 5px;
+  object-fit: cover;
+}
+.order-wrapper .card:hover img{
+  transform: scale(1);
+}
+.order-wrapper table td{
+  border: 1px solid #eaeaea;
+  padding:5px 10px;
+  width: 160px;
 }
 
 @media(max-width: 1199.98px) {
